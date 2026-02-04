@@ -1,5 +1,11 @@
 import ee
+import os
+import json
 
 def initialize_gee():
-    project_id = "uhi-analyzer".strip()
-    ee.Initialize(project=project_id)
+    key_json = json.loads(os.environ["EE_KEY_JSON"])
+    credentials = ee.ServiceAccountCredentials(
+        key_json["client_email"],
+        key_json
+    )
+    ee.Initialize(credentials)
