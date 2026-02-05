@@ -30,7 +30,7 @@ st.set_page_config(page_title="Urban Heat & Pollution Analyzer", layout="wide")
 st.title("🌆 Urban Heat & Pollution Analyzer")
 st.markdown(
     """
-    A decision-support dashboard combining satellite-derived urban heat** with real-time CPCB ground air quality data to support public health & government planning.
+    A decision-support dashboard combining satellite-derived urban heat with near real-time ground air quality data to support public health & government planning.
     """
 )
 
