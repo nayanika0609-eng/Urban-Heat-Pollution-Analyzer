@@ -1,10 +1,8 @@
 import ee
 import os
-import json
 import tempfile
 
 def initialize_gee():
-    # Write secret JSON to a temp file (safest method)
     ee_json = os.environ["EE_KEY_JSON"]
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as f:
@@ -12,7 +10,7 @@ def initialize_gee():
         key_path = f.name
 
     credentials = ee.ServiceAccountCredentials(
-        json.loads(ee_json)["client_email"],
+        None,  # email auto-read from json
         key_path
     )
     ee.Initialize(credentials)
