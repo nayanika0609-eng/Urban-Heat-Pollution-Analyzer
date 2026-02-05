@@ -1,16 +1,25 @@
 import ee
-import os
-import tempfile
+import json
+import streamlit as st
 
 def initialize_gee():
-    ee_json = os.environ["EE_KEY_JSON"]
+    try:
+        # Streamlit Cloud safe access
+        ee_json = st.secrets["EE_KEY_JSON"]
+        key_dict = json.loads(ee_json)
 
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as f:
-        f.write(ee_json.encode("utf-8"))
-        key_path = f.name
+        credentials = ee.ServiceAccountCredentials(
+            key_dict["client_email"],
+            key_dict
+        )
 
-    credentials = ee.ServiceAccountCredentials(
-        None,  # email auto-read from json
-        key_path
-    )
-    ee.Initialize(credentials)
+        ee.Initialize(credentials)
+
+    except KeyError:
+        raise RuntimeError(
+            "EE_KEY_JSON not found in Streamlit Secrets. "
+            "Please add it under App → Settings → Secrets."
+        )
+
+    except Exception as e:
+        raise RuntimeError(f"Earth Engine init failed: {e}")
